@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun search(text: String) {
-        var searchchar = text;
+        var searchchar = text
         if (text.length > 1) {
             //Toast.makeText(this, "只能查询单个字", Toast.LENGTH_SHORT).show()
             loop = loop % text.length
@@ -59,13 +59,13 @@ class MainActivity : AppCompatActivity() {
         }
         try {
             val bean = FontStrokeUtil.getInstance().query(searchchar)
-            PinyinHelper.addPinyinDict("/sdcard/user.dict")        //添加拥护自定义字典
-            PinyinHelper.addMutilPinyinDict("/sdcard/m_user.dict") //添加拥护自定义字典
+//            PinyinHelper.addPinyinDict("/sdcard/user.dict")        //添加用户自定义字典
+//            PinyinHelper.addMutilPinyinDict("/sdcard/m_user.dict") //添加用户自定义字典
             val pinyin = PinyinHelper.convertToPinyinString(searchchar, ",",  PinyinFormat.WITH_TONE_MARK)
             mChineseCharacterView.setStrokeInfo(bean.strokes).setMedianPaths(bean.medians)
             mChineseCharacterView.setPinyin(pinyin)
             mChineseCharacterView.redraw(true)
-        } catch (e: java.lang.Exception) {
+        } catch (e: Exception) {
             Toast.makeText(this, "不支持($searchchar)", Toast.LENGTH_SHORT).show()
         }
     }

@@ -48,7 +48,6 @@ public final class ChineseCharacterView extends View {
     /**
      * 设置当前笔画的区域，用于判断是否按照笔画去写字
      */
-
     private Region curPathRegion;
 
     private Path curStrokePath;
@@ -68,7 +67,7 @@ public final class ChineseCharacterView extends View {
     private String pinyin = "";
 
     /**
-     * 初始田字格的笔画属性
+     * 初始田字格的画笔属性
      */
     private Paint gridPaint = new Paint(1);
 
@@ -279,7 +278,7 @@ public final class ChineseCharacterView extends View {
         }
         float[] arrayOfFloat1 = new float[2];
         float[] arrayOfFloat2 = new float[2];
-        PathMeasure pathMeasure = this.curDrawPathMeasure;  //用于判断终止笔画在范围内
+        PathMeasure pathMeasure = this.curDrawPathMeasure;  //用于判断起始笔画在范围内
         pathMeasure.getPosTan(0.0F, arrayOfFloat1, arrayOfFloat2);
         paramFloat1 -= arrayOfFloat1[0];
         paramFloat2 -= arrayOfFloat1[1];
@@ -300,7 +299,7 @@ public final class ChineseCharacterView extends View {
                 this.strokePaths.clear();
                 for (String str : list) {
                     Path path = parser(str);
-                    path.transform(this.pathMatrix); //字体底图 变化大小和镜像， 字体获取的是上下镜像图
+                    path.transform(this.pathMatrix); //字体底图 变换大小和镜像， 字体获取的是上下镜像图
                     this.strokePaths.add(path);
                 }
             }
@@ -535,7 +534,7 @@ public final class ChineseCharacterView extends View {
     @Override
     protected void onMeasure(int paramInt1, int paramInt2) {
         super.onMeasure(paramInt1, paramInt2);
-        int im = View.MeasureSpec.getMode(paramInt2);
+        int im = View.MeasureSpec.getMode(paramInt1);
         int is = View.MeasureSpec.getSize(paramInt1);
         int jm = View.MeasureSpec.getMode(paramInt2);
         int js = View.MeasureSpec.getSize(paramInt2);
@@ -701,6 +700,7 @@ public final class ChineseCharacterView extends View {
     public void setShowMedian(boolean showMedian) {
         this.showMedian = showMedian;
     }
+
     public final ChineseCharacterView setMedianOriPaths(List<String> paramList) {
         this.medianOriPaths = paramList;
         return this;
@@ -719,7 +719,7 @@ public final class ChineseCharacterView extends View {
     /**
      *
      * @param paramStrokeDrawListener x
-     * @return 注册笔画的回调处理， 实际没有调用
+     * @return 注册画笔的回调处理， 实际没有调用
      */
     public final ChineseCharacterView setStrokeDrawListener(StrokeDrawListener paramStrokeDrawListener) {
         this.strokeDrawCompleteListener = paramStrokeDrawListener;
@@ -792,7 +792,7 @@ public final class ChineseCharacterView extends View {
             ChineseCharacterView.this.pathMatrix.reset(); //设置田字格大小，用于映射字体大小
             float f1;
             float f2;
-            float f3 = (ChineseCharacterView.this.rectSize * 1.0F - ChineseCharacterView.this.fixedSize);  // 放大比例
+            float f3 = ChineseCharacterView.this.rectSize * 1.0F / ChineseCharacterView.this.fixedSize;  // 放大比例
             float f4, f5, f6, f7;
             if (ChineseCharacterView.this.needShift) {
                 f1 = (ChineseCharacterView.this.rectSize - ChineseCharacterView.this.fixedSize) * 1.0F /2;
@@ -815,7 +815,7 @@ public final class ChineseCharacterView extends View {
                 ChineseCharacterView.this.pathMatrix.postScale(f3, f3, f4 ,f5);
             }
             ChineseCharacterView.this.pathMatrix.postTranslate(f6, f7);
-            Log.e(TAG, "rectSize:" + rectSize + "f:" + f1 + "," + f2 + "," + f3 + "," + f4 + "," + f5);
+            Log.e(TAG, "rectSize:" + rectSize + " f:" + f1 + "," + f2 + "," + f3 + "," + f4 + "," + f5);
             if (strokePaths == null || strokePaths.size() == 0) {
                 ChineseCharacterView.this.initStrokePaths();  // 重写初始化字体底图
             }

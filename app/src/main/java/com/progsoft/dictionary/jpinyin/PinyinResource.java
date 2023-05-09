@@ -45,6 +45,7 @@ public final class PinyinResource {
             return null;
         }
     }
+
     protected static Reader newFileReader(String path) throws FileNotFoundException {
         try {
             return new InputStreamReader(new FileInputStream(path), "UTF-8");
@@ -55,7 +56,7 @@ public final class PinyinResource {
 
     protected static Map<String, String> getResource(Reader reader) {
         Map<String, String> map = new ConcurrentHashMap<String, String>();
-        if (reader  == null)
+        if (reader == null)
             return map;
         try {
             BufferedReader br = new BufferedReader(reader);
